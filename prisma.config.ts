@@ -1,0 +1,14 @@
+  // prisma.config.ts
+  import { defineConfig } from "@prisma/config";
+  import "dotenv/config";
+
+  if (!process.env.DATABASE_URL) {
+    throw new Error("❌ DATABASE_URL tidak ditemukan.");
+  }
+
+  export default defineConfig({
+    schema: "./prisma/schema.prisma",
+    datasource: {
+      url: process.env.DATABASE_URL,  // Prisma 7 cuma butuh ini
+    },
+  });
