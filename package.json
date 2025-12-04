@@ -9,7 +9,7 @@
     "export": "next build",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
