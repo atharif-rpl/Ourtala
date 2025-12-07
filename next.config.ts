@@ -8,10 +8,10 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "db.defnjaexuwexxatsprnc.supabase.co", // Hostname Supabase kamu
-        port: "5432",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'defnjaexuwexxatsprnc.supabase.co', // Link Supabase kamu
+        port: '',
+        pathname: '/**',
       },
     ],
   },
