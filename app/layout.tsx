@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css"; // Pastikan path css benar
+import "./globals.css"; 
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
