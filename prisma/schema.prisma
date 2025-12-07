@@ -37,3 +37,25 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Recruitment {
+  id              Int      @id @default(autoincrement())
+  title           String   // Contoh: Social Media Officer
+  division        String   // Contoh: Social Media Manager
+  type            String   // Contoh: Internship / Volunteer
+  imageUrl        String?  // Foto Cover Posisi
+  
+  shortDesc       String   // Deskripsi singkat
+  fullDescription String   // Deskripsi lengkap
+  
+  // Array (List) untuk poin-poin
+  requirements     String[] // ["Fluent English", "Active", ...]
+  responsibilities String[] // ["Manage IG", "Create Content", ...]
+  benefits         String[] // ["Certificate", "Network", ...]
+  
+  linkApply       String   // Link Google Form
+  isOpen          Boolean  @default(true)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

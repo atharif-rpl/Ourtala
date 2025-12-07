@@ -6,7 +6,15 @@ import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, PlusCircle, LogOut, HeartHandshake, Users } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
+import { Briefcase } from 'lucide-react'; // Tambah icon ini
 
+// ... di dalam menuItems:
+const menuItems = [
+  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { name: 'Tambah Donasi', href: '/admin/create', icon: PlusCircle },
+  { name: 'Open Recruitment', href: '/admin/recruitment', icon: Briefcase }, // <--- BARU
+  { name: 'Kelola User', href: '/admin/users', icon: Users },
+];
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -28,17 +36,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // 2. Atur Menu Berdasarkan Izin
   const menuItems = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard, show: true }, // Selalu muncul
-    { 
-      name: 'Tambah Donasi', 
-      href: '/admin/create', 
-      icon: PlusCircle, 
+    {
+      name: 'Tambah Donasi',
+      href: '/admin/create',
+      icon: PlusCircle,
       show: userPerms.includes('create') || userRole === 'SUPER_ADMIN' // Cek izin 'create'
     },
-    { 
-      name: 'Kelola User', 
-      href: '/admin/users', 
-      icon: Users, 
+    {
+      name: 'Kelola User',
+      href: '/admin/users',
+      icon: Users,
       show: userRole === 'SUPER_ADMIN' // Cuma buat Big Boss
+    },
+    {
+      name: 'Open Recruitment',
+      href: '/admin/recruitment',
+      icon: Briefcase,
+      show: userPerms.includes('create') || userRole === 'SUPER_ADMIN'
     },
   ];
 
@@ -55,7 +69,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex min-h-screen bg-gray-100 font-sans">
       <Toaster position="top-right" />
-      
+
       <aside className="w-64 bg-white border-r shadow-sm hidden md:flex flex-col">
         <div className="p-6 flex items-center gap-2 border-b">
           <HeartHandshake className="text-emerald-600 w-8 h-8" />
@@ -69,11 +83,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                  pathname === item.href 
-                    ? 'bg-emerald-50 text-emerald-700 font-medium' 
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${pathname === item.href
+                    ? 'bg-emerald-50 text-emerald-700 font-medium'
                     : 'text-gray-600 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 <item.icon className="w-5 h-5" />
                 {item.name}
