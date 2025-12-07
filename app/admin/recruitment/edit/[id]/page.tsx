@@ -5,19 +5,19 @@ import { useRouter, useParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import ImageUpload from '../../components/ImageUpload';
-import DynamicList from '../../components/DynamicList';
+import ImageUpload from '../../../components/ImageUpload';
+import DynamicList from '../../../components/DynamicList';
 
 export default function EditRecruitmentPage() {
   const router = useRouter();
   const params = useParams();
   const [loading, setLoading] = useState(true);
-  
+
   const [formData, setFormData] = useState({
     title: '', division: '', type: 'Internship', imageUrl: '',
     shortDesc: '', fullDescription: '', linkApply: '', isOpen: true,
-    requirements: [] as string[], 
-    responsibilities: [] as string[], 
+    requirements: [] as string[],
+    responsibilities: [] as string[],
     benefits: [] as string[],
   });
 
@@ -66,36 +66,36 @@ export default function EditRecruitmentPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
-                <label className="text-sm font-medium">Judul</label>
-                <input className="w-full p-2 border rounded" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
+              <label className="text-sm font-medium">Judul</label>
+              <input className="w-full p-2 border rounded" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} />
             </div>
             <div className="space-y-2">
-                <label className="text-sm font-medium">Divisi</label>
-                <input className="w-full p-2 border rounded" value={formData.division} onChange={e => setFormData({...formData, division: e.target.value})} />
+              <label className="text-sm font-medium">Divisi</label>
+              <input className="w-full p-2 border rounded" value={formData.division} onChange={e => setFormData({ ...formData, division: e.target.value })} />
             </div>
             <div className="space-y-2">
-                <label className="text-sm font-medium">Link Gambar</label>
-                <ImageUpload value={formData.imageUrl} onChange={url => setFormData({...formData, imageUrl: url})} />
+              <label className="text-sm font-medium">Link Gambar</label>
+              <ImageUpload value={formData.imageUrl} onChange={url => setFormData({ ...formData, imageUrl: url })} />
             </div>
             <div className="space-y-2">
-                <label className="text-sm font-medium">Link Apply</label>
-                <input className="w-full p-2 border rounded" value={formData.linkApply} onChange={e => setFormData({...formData, linkApply: e.target.value})} />
+              <label className="text-sm font-medium">Link Apply</label>
+              <input className="w-full p-2 border rounded" value={formData.linkApply} onChange={e => setFormData({ ...formData, linkApply: e.target.value })} />
             </div>
           </div>
 
           <div className="space-y-2">
-             <label className="text-sm font-medium">Status</label>
-             <select className="w-full p-2 border rounded" value={formData.isOpen ? "true" : "false"} 
-                onChange={e => setFormData({...formData, isOpen: e.target.value === "true"})}>
-                <option value="true">OPEN (Dibuka)</option>
-                <option value="false">CLOSED (Ditutup)</option>
-             </select>
+            <label className="text-sm font-medium">Status</label>
+            <select className="w-full p-2 border rounded" value={formData.isOpen ? "true" : "false"}
+              onChange={e => setFormData({ ...formData, isOpen: e.target.value === "true" })}>
+              <option value="true">OPEN (Dibuka)</option>
+              <option value="false">CLOSED (Ditutup)</option>
+            </select>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 pt-4 border-t">
-            <DynamicList label="Requirements" items={formData.requirements} onChange={v => setFormData({...formData, requirements: v})} />
-            <DynamicList label="Responsibilities" items={formData.responsibilities} onChange={v => setFormData({...formData, responsibilities: v})} />
-            <DynamicList label="Benefits" items={formData.benefits} onChange={v => setFormData({...formData, benefits: v})} />
+            <DynamicList label="Requirements" items={formData.requirements} onChange={v => setFormData({ ...formData, requirements: v })} />
+            <DynamicList label="Responsibilities" items={formData.responsibilities} onChange={v => setFormData({ ...formData, responsibilities: v })} />
+            <DynamicList label="Benefits" items={formData.benefits} onChange={v => setFormData({ ...formData, benefits: v })} />
           </div>
 
           <button type="submit" className="w-full bg-blue-600 text-white p-3 rounded font-bold hover:bg-blue-700">Simpan Perubahan</button>

@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 
 export default function DashboardPage() {
   const [donations, setDonations] = useState<any[]>([]);
-  const [jobs, setJobs] = useState<any[]>([]); // State untuk Oprec
+  const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
   // Identitas User
@@ -21,12 +21,10 @@ export default function DashboardPage() {
 
   const fetchAllData = async () => {
     try {
-      // Ambil Donasi
       const resDonasi = await fetch('/api/donations');
       const dataDonasi = await resDonasi.json();
       setDonations(dataDonasi);
 
-      // Ambil Recruitment
       const resJobs = await fetch('/api/recruitment');
       const dataJobs = await resJobs.json();
       setJobs(dataJobs);
@@ -48,7 +46,6 @@ export default function DashboardPage() {
 
   const can = (permission: string) => myRole === 'SUPER_ADMIN' || myPerms.includes(permission);
 
-  // Hapus Donasi
   const handleDeleteDonation = async (id: number) => {
     if (!confirm("Hapus donasi ini?")) return;
     const toastId = toast.loading("Menghapus...");
@@ -59,13 +56,11 @@ export default function DashboardPage() {
     } catch (e: any) { toast.error(e.message, { id: toastId }); }
   };
 
-  // Hapus Recruitment
   const handleDeleteJob = async (id: number) => {
     if (!confirm("Hapus lowongan ini?")) return;
     const toastId = toast.loading("Menghapus...");
     try {
       const res = await fetch(`/api/recruitment/${id}`, { method: 'DELETE' });
-      // Tambahkan logika cek permission backend jika perlu di API recruitment
       if (res.ok) { toast.success("Terhapus", { id: toastId }); fetchAllData(); }
     } catch (e) { toast.error("Gagal hapus", { id: toastId }); }
   };
@@ -76,6 +71,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
+      
       {/* Debug Info */}
       <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 flex items-center gap-2 text-sm text-blue-800">
         <ShieldAlert className="w-4 h-4" />
@@ -98,18 +94,29 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* TABEL DONASI */}
+      {/* TABEL DONASI (REVISI DI SINI) */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-5 border-b bg-gray-50"><h3 className="font-bold text-gray-700">📋 Daftar Program Donasi</h3></div>
         <table className="w-full text-left text-sm">
           <thead className="bg-white border-b">
-            <tr><th className="p-4">Judul</th><th className="p-4">Target</th><th className="p-4 text-right">Aksi</th></tr>
+            <tr>
+              <th className="p-4">Judul</th>
+              <th className="p-4">Target</th>
+              <th className="p-4">Terkumpul</th> {/* <--- KOLOM BARU */}
+              <th className="p-4 text-right">Aksi</th>
+            </tr>
           </thead>
           <tbody className="divide-y">
             {donations.map((item) => (
               <tr key={item.id} className="hover:bg-gray-50">
                 <td className="p-4 font-medium">{item.title}</td>
-                <td className="p-4">Rp {item.targetAmount.toLocaleString()}</td>
+                <td className="p-4 text-gray-500">Rp {item.targetAmount.toLocaleString('id-ID')}</td>
+                
+                {/* DATA TERKUMPUL (Hijau & Bold) */}
+                <td className="p-4 text-emerald-600 font-bold">
+                  Rp {item.currentAmount.toLocaleString('id-ID')}
+                </td>
+
                 <td className="p-4 flex justify-end gap-2">
                   {can('update') && <Link href={`/admin/edit/${item.id}`} className="p-2 text-blue-600 bg-blue-50 rounded"><Edit className="w-4 h-4" /></Link>}
                   {can('delete') && <button onClick={() => handleDeleteDonation(item.id)} className="p-2 text-red-600 bg-red-50 rounded"><Trash2 className="w-4 h-4" /></button>}
@@ -120,7 +127,7 @@ export default function DashboardPage() {
         </table>
       </div>
 
-      {/* TABEL REKRUTMEN (BARU) */}
+      {/* TABEL REKRUTMEN */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-5 border-b bg-gray-50 flex justify-between items-center">
             <h3 className="font-bold text-gray-700">💼 Daftar Open Recruitment</h3>
@@ -143,7 +150,6 @@ export default function DashboardPage() {
                     </span>
                 </td>
                 <td className="p-4 flex justify-end gap-2">
-                  {/* Link ke Halaman Edit Recruitment */}
                   {can('update') && <Link href={`/admin/recruitment/edit/${job.id}`} className="p-2 text-blue-600 bg-blue-50 rounded"><Edit className="w-4 h-4" /></Link>}
                   {can('delete') && <button onClick={() => handleDeleteJob(job.id)} className="p-2 text-red-600 bg-red-50 rounded"><Trash2 className="w-4 h-4" /></button>}
                 </td>
