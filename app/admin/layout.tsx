@@ -14,6 +14,7 @@ const menuItems = [
   { name: 'Tambah Donasi', href: '/admin/create', icon: PlusCircle },
   { name: 'Open Recruitment', href: '/admin/recruitment', icon: Briefcase }, // <--- BARU
   { name: 'Kelola User', href: '/admin/users', icon: Users },
+  { name: 'Tambah Banner', href: '/admin/banners', icon: Users },
 ];
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -51,6 +52,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     {
       name: 'Open Recruitment',
       href: '/admin/recruitment',
+      icon: Briefcase,
+      show: userPerms.includes('create') || userRole === 'SUPER_ADMIN'
+    },
+    {
+      name: 'News Banner',
+      href: '/admin/banners',
       icon: Briefcase,
       show: userPerms.includes('create') || userRole === 'SUPER_ADMIN'
     },
