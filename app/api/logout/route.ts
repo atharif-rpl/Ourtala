@@ -1,14 +1,12 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export async function POST() {
-  const response = NextResponse.json({ message: "Berhasil logout" });
+  const cookieStore = await cookies();
+  
+  // Hapus semua kemungkinan nama cookie (sesuaikan dengan login kamu)
+  cookieStore.delete('token'); 
+  cookieStore.delete('session');
 
-  // Hapus cookie 'token' dengan cara mengeset umurnya jadi 0 detik
-  response.cookies.set('token', '', {
-    httpOnly: true,
-    expires: new Date(0), // Tanggal kadaluarsa di masa lalu
-    path: '/',
-  });
-
-  return response;
+  return NextResponse.json({ message: "Berhasil logout" });
 }

@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation'; // Pakai useParams untuk
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import ImageUpload from '../../components/ImageUpload'; // Path naik 2 level
+import ImageUpload from '../../../components/ImageUpload'; // Path naik 2 level
 
 export default function EditDonationPage() {
   const router = useRouter();

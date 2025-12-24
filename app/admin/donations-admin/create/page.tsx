@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import ImageUpload from '../components/ImageUpload'; // Pastikan path-nya benar
+import ImageUpload from '../../components/ImageUpload'; // Pastikan path-nya benar
 
 export default function CreateDonationPage() {
     const router = useRouter();
