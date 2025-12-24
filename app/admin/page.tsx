@@ -9,12 +9,12 @@ export default function DashboardPage() {
   const [donations, setDonations] = useState<any[]>([]);
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Identitas User
   const [myRole, setMyRole] = useState('');
   const [myPerms, setMyPerms] = useState<string[]>([]);
   // Tambah State Username biar lengkap
-  const [myUsername, setMyUsername] = useState(''); 
+  const [myUsername, setMyUsername] = useState('');
 
   useEffect(() => {
     fetchAllData();
@@ -31,7 +31,7 @@ export default function DashboardPage() {
       const dataJobs = await resJobs.json();
       setJobs(dataJobs);
 
-    } catch (error) { toast.error("Gagal ambil data"); } 
+    } catch (error) { toast.error("Gagal ambil data"); }
     finally { setLoading(false); }
   };
 
@@ -79,7 +79,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      
+
       {/* Debug Info (Opsional, boleh dihapus kalau ganggu) */}
       <div className="bg-blue-50 p-3 rounded-lg border border-blue-200 flex items-center gap-2 text-sm text-blue-800">
         <ShieldAlert className="w-4 h-4" />
@@ -106,11 +106,11 @@ export default function DashboardPage() {
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-5 border-b bg-gray-50"><h3 className="font-bold text-gray-700">📋 Daftar Program Donasi</h3></div>
         <table className="w-full text-left text-sm">
-        <thead className="bg-white border-b">
+          <thead className="bg-white border-b">
             <tr>
               <th className="p-4">Judul</th>
               <th className="p-4">Target</th>
-              <th className="p-4">Terkumpul</th> 
+              <th className="p-4">Terkumpul</th>
               <th className="p-4 text-right">Aksi</th>
             </tr>
           </thead>
@@ -127,15 +127,15 @@ export default function DashboardPage() {
                   {/* --- EDIT BAGIAN INI --- */}
                   {/* Cek izin 'donation:update' (bukan cuma 'update') */}
                   {can('donation:update') && (
-                     <Link href={`/admin/donations/edit/${item.id}`} className="p-2 text-blue-600 bg-blue-50 rounded hover:bg-blue-100">
-                        <Edit className="w-4 h-4" />
-                     </Link>
+                    <Link href={`/admin/donations-admin/edit/${item.id}`} className="p-2 text-blue-600 bg-blue-50 rounded hover:bg-blue-100">
+                      <Edit className="w-4 h-4" />
+                    </Link>
                   )}
                   {/* Cek izin 'donation:delete' */}
                   {can('donation:delete') && (
-                     <button onClick={() => handleDeleteDonation(item.id)} className="p-2 text-red-600 bg-red-50 rounded hover:bg-red-100">
-                        <Trash2 className="w-4 h-4" />
-                     </button>
+                    <button onClick={() => handleDeleteDonation(item.id)} className="p-2 text-red-600 bg-red-50 rounded hover:bg-red-100">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   )}
                 </td>
               </tr>
@@ -147,14 +147,14 @@ export default function DashboardPage() {
       {/* TABEL REKRUTMEN */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-5 border-b bg-gray-50 flex justify-between items-center">
-            <h3 className="font-bold text-gray-700">💼 Daftar Open Recruitment</h3>
-            
-            {/* Logic Tombol 'Kelola Detail' */}
-            {(myRole === 'SUPER_ADMIN' || myPerms.includes('oprec:create') || myPerms.includes('oprec:update')) && (
-   <Link href="/admin/recruitment" className="text-xs bg-emerald-600 text-white px-3 py-1 rounded hover:bg-emerald-700">
-     Kelola Detail
-   </Link>
-)}
+          <h3 className="font-bold text-gray-700">💼 Daftar Open Recruitment</h3>
+
+          {/* Logic Tombol 'Kelola Detail' */}
+          {(myRole === 'SUPER_ADMIN' || myPerms.includes('oprec:create') || myPerms.includes('oprec:update')) && (
+            <Link href="/admin/open-recruitment-admin" className="text-xs bg-emerald-600 text-white px-3 py-1 rounded hover:bg-emerald-700">
+              Kelola Detail
+            </Link>
+          )}
         </div>
         <table className="w-full text-left text-sm">
           <thead className="bg-white border-b">
@@ -164,27 +164,34 @@ export default function DashboardPage() {
             {jobs.map((job) => (
               <tr key={job.id} className="hover:bg-gray-50">
                 <td className="p-4">
-                    <div className="font-medium">{job.title}</div>
-                    <div className="text-xs text-gray-500">{job.division}</div>
+                  <div className="font-medium">{job.title}</div>
+                  <div className="text-xs text-gray-500">{job.division}</div>
                 </td>
                 <td className="p-4">
-                    <span className={`px-2 py-1 rounded text-xs font-bold ${job.isOpen ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600'}`}>
-                        {job.isOpen ? 'OPEN' : 'CLOSED'}
-                    </span>
+                  <span className={`px-2 py-1 rounded text-xs font-bold ${job.isOpen ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600'}`}>
+                    {job.isOpen ? 'OPEN' : 'CLOSED'}
+                  </span>
                 </td>
                 <td className="p-4 flex justify-end gap-2">
                   {/* --- EDIT BAGIAN INI JUGA --- */}
                   {/* Gunakan 'oprec:update' */}
                   {can('oprec:update') && (
-                     <Link href={`/admin/recruitment/edit/${job.id}`} className="p-2 text-blue-600 bg-blue-50 rounded hover:bg-blue-100">
-                        <Edit className="w-4 h-4" />
-                     </Link>
+                    <Link
+                      // URL ini sudah cocok dengan nama folder 'open-recruitment-admin'
+                      href={`/admin/open-recruitment-admin/edit/${job.id}`}
+                      className="p-2 text-blue-600 bg-blue-50 rounded hover:bg-blue-100"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Link>
                   )}
-                  {/* Gunakan 'oprec:delete' */}
+
                   {can('oprec:delete') && (
-                     <button onClick={() => handleDeleteJob(job.id)} className="p-2 text-red-600 bg-red-50 rounded hover:bg-red-100">
-                        <Trash2 className="w-4 h-4" />
-                     </button>
+                    <button
+                      onClick={() => handleDeleteJob(job.id)}
+                      className="p-2 text-red-600 bg-red-50 rounded hover:bg-red-100"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   )}
                 </td>
               </tr>
